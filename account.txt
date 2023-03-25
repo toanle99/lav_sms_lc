@@ -1,0 +1,6 @@
+Admin	            admin	    admin@admin.com	            cj
+Ban Giam Hieu       bgh	        bgh@bgh.com	                cj
+Thay An             teacher	    teacher@teacher.com	        cj
+Bo An               parent	    parent@parent.com	        cj
+Hs 1                student	    student@student.com	        cj
+
