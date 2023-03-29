@@ -13,6 +13,6 @@ class Pay
 
     public static function genRefCode()
     {
-        return date('Y').'/'.mt_rand(10000, 999999);
+        return date('Y').'/'.mt_rand(100000, 999999);
     }
 }

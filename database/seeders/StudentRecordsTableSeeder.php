@@ -7,6 +7,8 @@ use App\Models\StudentRecord;
 use App\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use App\Models\MyClass;
+
 
 class StudentRecordsTableSeeder extends Seeder
 {
@@ -23,15 +25,15 @@ class StudentRecordsTableSeeder extends Seeder
 
     protected function createManyStudentRecords(int $count)
     {
-        $sections = Section::all();
-
-        foreach ($sections as $section){
+        // $sections = Section::all();
+        $c = MyClass::pluck('id')->all();
+        foreach ($c as $section){
           User::factory()
                 ->has(
                     StudentRecord::factory()
                     ->state([
-                    'section_id' => $section->id,
-                    'my_class_id' => $section->my_class_id,
+                    // 'section_id' => $section->id,
+                    'my_class_id' => $section,
                     'user_id' => function(User $user){
                         return ['user_id' => $user->id];
                     },
@@ -47,7 +49,8 @@ class StudentRecordsTableSeeder extends Seeder
 
     protected function createStudentRecord()
     {
-        $section = Section::first();
+        // $section = Section::first();
+        $c = MyClass::first();
 
         $user = User::factory()->create([
             'name' => 'Student DJ',
@@ -59,9 +62,9 @@ class StudentRecordsTableSeeder extends Seeder
         ]);
 
         StudentRecord::factory()->create([
-            'my_class_id' => $section->my_class_id,
+            'my_class_id' => $c,
             'user_id' => $user->id,
-            'section_id' => $section->id
+            // 'section_id' => $section->id
         ]);
     }
 }

@@ -20,7 +20,7 @@ class UserController extends Controller
 
     public function __construct(UserRepo $user, LocationRepo $loc, MyClassRepo $my_class)
     {
-        $this->middleware('teamSA', ['only' => ['index', 'store', 'edit', 'update'] ]);
+        $this->middleware('teamSAT', ['only' => ['index', 'store', 'edit', 'update'] ]);
         $this->middleware('super_admin', ['only' => ['reset_pass','destroy'] ]);
 
         $this->user = $user;
@@ -30,10 +30,20 @@ class UserController extends Controller
 
     public function index()
     {
+        /*
+            1: supper_admin
+            2: admin
+            3: teacher
+            4: parent
+        */
         $ut = $this->user->getAllTypes();
         $ut2 = $ut->where('level', '>', 2);
-
-        $d['user_types'] = Qs::userIsAdmin() ? $ut2 : $ut;
+        $ut3 = $ut->where('level', '>', 3);
+        $ut4 = $ut->where('level', '>', 4);
+        
+        $d['user_types'] = Qs::userIsSuperAdmin()?$ut:(Qs::userIsAdmin()?$ut2:(Qs::userIsTeacher()?$ut3:$ut4));
+        // $d['user_types'] = Qs::userIsAdmin() ? $ut2 : $ut;
+        // dd($d['user_types']);
         $d['states'] = $this->loc->getStates();
         $d['users'] = $this->user->getPTAUsers();
         $d['nationals'] = $this->loc->getAllNationals();
@@ -47,8 +57,8 @@ class UserController extends Controller
         $d['user'] = $this->user->find($id);
         $d['states'] = $this->loc->getStates();
         $d['users'] = $this->user->getPTAUsers();
-        $d['blood_groups'] = $this->user->getBloodGroups();
-        $d['nationals'] = $this->loc->getAllNationals();
+        // $d['blood_groups'] = $this->user->getBloodGroups();
+        // $d['nationals'] = $this->loc->getAllNationals();
         return view('pages.support_team.users.edit', $d);
     }
 
@@ -77,7 +87,8 @@ class UserController extends Controller
         $user_is_staff = in_array($user_type, Qs::getStaff());
         $user_is_teamSA = in_array($user_type, Qs::getTeamSA());
 
-        $staff_id = Qs::getAppCode().'/STAFF/'.date('Y/m', strtotime($req->emp_date)).'/'.mt_rand(1000, 9999);
+        // $staff_id = Qs::getAppCode().'/STAFF/'.date('Y/m', strtotime($req->emp_date)).'/'.mt_rand(1000, 9999);
+        $staff_id = 'USERS/'.$user_type.'/'.mt_rand(100000, 999999);
         $data['username'] = $uname = ($user_is_teamSA) ? $req->username : $staff_id;
 
         $pass = $req->password ?: $user_type;
@@ -129,7 +140,8 @@ class UserController extends Controller
         $data['user_type'] = $user_type;
 
         if($user_is_staff && !$user_is_teamSA){
-            $data['username'] = Qs::getAppCode().'/STAFF/'.date('Y/m', strtotime($req->emp_date)).'/'.mt_rand(1000, 9999);
+            $data['username'] = 'USERS/'.$user_type.'/'.mt_rand(100000, 999999);
+            // $data['username'] = Qs::getAppCode().'/STAFF/'.date('Y/m', strtotime($req->emp_date)).'/'.mt_rand(1000, 9999);
         }
         else {
             $data['username'] = $user->username;

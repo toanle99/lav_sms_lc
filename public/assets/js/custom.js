@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
 
-    $('.date-pick').datepicker();
+    $('.date-pick').datepicker(); //{  format: 'dd/mm/yyyy' }
 
 });
 

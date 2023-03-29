@@ -20,7 +20,7 @@ class UsersTableSeeder extends Seeder
         DB::table('users')->delete();
 
         $this->createNewUsers();
-        $this->createManyUsers( 3);
+        // $this->createManyUsers( 3);
     }
 
     protected function createNewUsers()
@@ -41,7 +41,7 @@ class UsersTableSeeder extends Seeder
 
             [
                 'name' => 'Ban giám hiệu',
-                'email' => 'bgh@gmail.com',
+                'email' => 'bgh@bgh.com',
                 'password' => $password,
                 'user_type' => 'admin',
                 'username' => 'bgh',

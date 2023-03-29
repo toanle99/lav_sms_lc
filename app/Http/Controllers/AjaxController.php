@@ -5,16 +5,19 @@ namespace App\Http\Controllers;
 use App\Helpers\Qs;
 use App\Repositories\LocationRepo;
 use App\Repositories\MyClassRepo;
+use App\Repositories\StudentRepo;
+
 use Illuminate\Support\Facades\Auth;
 
 class AjaxController extends Controller
 {
     protected $loc, $my_class;
 
-    public function __construct(LocationRepo $loc, MyClassRepo $my_class)
+    public function __construct(LocationRepo $loc, MyClassRepo $my_class, StudentRepo $student_repo)
     {
         $this->loc = $loc;
         $this->my_class = $my_class;
+        $this->student_repo = $student_repo;
     }
 
     public function get_lga($state_id)
@@ -25,6 +28,14 @@ class AjaxController extends Controller
         $lgas = $this->loc->getLGAs($state_id);
         return $data = $lgas->map(function($q){
             return ['id' => $q->id, 'name' => $q->name];
+        })->all();
+    }
+
+    public function get_class_student($class_id)
+    {
+        $sections = $this->student_repo->findStudentsByClass($class_id);
+        return $sections = $sections->map(function($q){
+            return ['id' => $q->id, 'name' => $q->user->name, 'dob' => $q->user->dob];
         })->all();
     }
 

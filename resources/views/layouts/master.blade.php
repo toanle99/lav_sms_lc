@@ -38,10 +38,10 @@
             @yield('content')
         </div>
 
-
+        
     </div>
 </div>
-
+@include('partials.footer')
 @include('partials.inc_bottom')
 @yield('scripts')
 </body>

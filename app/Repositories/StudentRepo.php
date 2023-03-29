@@ -6,6 +6,7 @@ use App\Helpers\Qs;
 use App\Models\Dorm;
 use App\Models\Promotion;
 use App\Models\StudentRecord;
+use App\Models\StudentWritte;
 
 class StudentRepo {
 
@@ -30,11 +31,19 @@ class StudentRepo {
         return $this->gradStudents()->with(['my_class', 'section', 'user'])->get()->sortBy('user.name');
     }
 
-    public function findStudentsBySection($sec_id)
-    {
-        return $this->activeStudents()->where('section_id', $sec_id)->with(['user', 'my_class'])->get();
-    }
+    // public function findStudentsBySection($sec_id)
+    // {
+    //     return $this->activeStudents()->where('section_id', $sec_id)->with(['user', 'my_class'])->get();
+    // }
 
+    public function createWritte($data)
+    {
+        return StudentWritte::create($data);
+    }
+    public function updateWritte($id, array $data)
+    {
+        return StudentWritte::find($id)->update($data);
+    }
     public function createRecord($data)
     {
         return StudentRecord::create($data);

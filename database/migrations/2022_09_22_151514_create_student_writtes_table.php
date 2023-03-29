@@ -15,19 +15,13 @@ class CreateStudentWrittesTable extends Migration
     {
         Schema::create('student_writtes', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('user_id');
-            $table->unsignedInteger('my_class_id');
-            $table->unsignedInteger('section_id');
-            $table->string('adm_no', 30)->unique()->nullable();
-            $table->unsignedInteger('my_parent_id')->nullable();
-            $table->unsignedInteger('dorm_id')->nullable();
-            $table->string('dorm_room_no')->nullable();
-            $table->string('session');
-            $table->string('house')->nullable();
-            $table->tinyInteger('age')->nullable();
-            $table->string('year_admitted')->nullable();
-            $table->tinyInteger('grad')->default(0);
-            $table->string('grad_date')->nullable();
+            $table->unsignedInteger('student_record_id');
+            $table->unsignedInteger('accept_by')->nullable();
+            $table->unsignedInteger('deny_by')->nullable();
+            $table->string('reason'); // li do
+            $table->tinyInteger('status')->nullable()->default(0); // trang thai=-> 0: cho xu ly, 1: duoc duyet, 2: tu choi 
+            $table->date('date_at');
+            $table->string('session_time')->nullable(); // thoi gian xin nghi =->  ca ngay, sang, chieu, toi
 
             $table->timestamps();
         });

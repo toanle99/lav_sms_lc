@@ -16,8 +16,8 @@
                         <div class="card-body">
                             <div class="text-center mb-3">
                                 <i class="icon-people icon-2x text-warning-400 border-warning-400 border-3 rounded-round p-3 mb-3 mt-1"></i>
-                                <h5 class="mb-0">Login to your account</h5>
-                                <span class="d-block text-muted">Your credentials</span>
+                                <h5 class="mb-0">Đăng nhập tài khoản </h5>
+                                <span class="d-block text-muted">Thông tin đăng nhập</span>
                             </div>
 
                                 @if ($errors->any())
@@ -29,11 +29,11 @@
 
 
                             <div class="form-group ">
-                                <input type="text" class="form-control" name="identity" value="{{ old('identity') }}" placeholder="Login ID or Email">
+                                <input type="text" class="form-control" name="identity" value="{{ old('identity') }}" placeholder="User name hoặc Email">
                             </div>
 
                             <div class="form-group ">
-                                <input required name="password" type="password" class="form-control" placeholder="{{ __('Password') }}">
+                                <input required name="password" type="password" class="form-control" placeholder="{{ __('Mật khẩu') }}">
 
                             </div>
 
@@ -41,15 +41,15 @@
                                 <div class="form-check mb-0">
                                     <label class="form-check-label">
                                         <input type="checkbox" name="remember" class="form-input-styled" {{ old('remember') ? 'checked' : '' }} data-fouc>
-                                        Remember
+                                        Nhớ mật khẩu
                                     </label>
                                 </div>
 
-                                <a href="{{ route('password.request') }}" class="ml-auto">Forgot password?</a>
+                                <a href="{{ route('password.request') }}" class="ml-auto">Quên mật khẩu?</a>
                             </div>
 
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary btn-block">Sign in <i class="icon-circle-right2 ml-2"></i></button>
+                                <button type="submit" class="btn btn-primary btn-block">Đăng nhập <i class="icon-circle-right2 ml-2"></i></button>
                             </div>
 
                            {{-- <div class="form-group">

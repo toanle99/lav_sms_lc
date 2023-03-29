@@ -20,11 +20,11 @@
                             </div>
                         </div>
 
-                      {{--
-                      <div class="form-group row">
-                            <label for="teacher_id" class="col-lg-3 col-form-label font-weight-semibold">Teacher</label>
+                      
+                        <div class="form-group row">
+                            <label for="teacher_id" class="col-lg-3 col-form-label font-weight-semibold">Giáo viên</label>
                             <div class="col-lg-9">
-                                <select data-placeholder="Select Teacher" class="form-control select-search" name="teacher_id" id="teacher_id">
+                                <select data-placeholder="Chọn giáo viên" class="form-control select-search" name="teacher_id" id="teacher_id" {{ Qs::userIsTeamSA()? '': 'disabled'}}>
                                     <option value=""></option>
                                     @foreach($teachers as $t)
                                         <option {{ $c->teacher_id == $t->id ? 'selected' : '' }} value="{{ Qs::hash($t->id) }}">{{ $t->name }}</option>
@@ -32,7 +32,7 @@
                                 </select>
                             </div>
                         </div>
-                      --}}
+                     
 
                         <div class="form-group row">
                             <label for="class_type_id" class="col-lg-3 col-form-label font-weight-semibold">Class Type</label>

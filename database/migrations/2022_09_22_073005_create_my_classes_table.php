@@ -17,6 +17,7 @@ class CreateMyClassesTable extends Migration
             $table->increments('id');
             $table->string('name', 100);
             $table->unsignedInteger('class_type_id')->nullable();
+            $table->unsignedInteger('teacher_id')->nullable();
             $table->timestamps();
         });
 

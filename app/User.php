@@ -8,6 +8,7 @@ use App\Models\Nationality;
 use App\Models\StaffRecord;
 use App\Models\State;
 use App\Models\StudentRecord;
+use App\Models\MyClass;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -40,6 +41,10 @@ class User extends Authenticatable
         return $this->hasOne(StudentRecord::class);
     }
 
+    public function myClass()
+    {
+        return $this->belongsTo(MyClass::class);
+    }
     public function lga()
     {
         return $this->belongsTo(Lga::class);

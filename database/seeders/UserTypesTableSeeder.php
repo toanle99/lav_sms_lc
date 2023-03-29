@@ -14,12 +14,12 @@ class UserTypesTableSeeder extends Seeder
     public function run()
     {
         $data = [
-            // ['title' => 'accountant',   'name' => 'Student',    'level' => 5],
-            ['title' => 'parent',       'name' => 'Parent',     'level' => 4],
-            ['title' => 'teacher',      'name' => 'Teacher',    'level' => 3],
-            ['title' => 'admin',        'name' => 'Board',      'level' => 2],
-            ['title' => 'super_admin',  'name' => 'Admin',      'level' => 1],
-           // ['title' => 'librarian', 'name' => 'librarian', 'level' => 6],
+            // ['title' => 'accountant',   'name' => 'Student',     'level' => 5],
+            ['title' => 'parent',       'name' => 'Phụ huynh',      'level' => 4],
+            ['title' => 'teacher',      'name' => 'Giáo viên',      'level' => 3],
+            ['title' => 'admin',        'name' => 'Ban giám hiệu',  'level' => 2],
+            ['title' => 'super_admin',  'name' => 'Admin',          'level' => 1],
+           // ['title' => 'librarian',  'name' => 'librarian',      'level' => 6],
         ];
         DB::table('user_types')->insert($data);
     }

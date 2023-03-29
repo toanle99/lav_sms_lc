@@ -6,6 +6,7 @@ use App\Models\ClassType;
 use App\Models\MyClass;
 use App\Models\Section;
 use App\Models\Subject;
+use App\Models\StudentRecord;
 
 class MyClassRepo
 {
@@ -15,9 +16,23 @@ class MyClassRepo
         return MyClass::orderBy('name', 'asc')->with('class_type')->get();
     }
 
+    public function allbyUser()
+    {
+        return MyClass::orderBy('name', 'asc')->with('class_type')->with('teacher')->get(); 
+    }
+
+    public function activeStudents()
+    {
+        return StudentRecord::where(['grad' => 0]);
+    }
+    public function findStudentsByClass($class_id)
+    {
+        return $this->activeStudents()->where(['my_class_id' => $class_id])->with(['my_class', 'user'])->get()->sortBy('user.name');
+    }
+
     public function getMC($data)
     {
-        return MyClass::where($data)->with('section');
+        return MyClass::where($data);
     }
 
     public function find($id)

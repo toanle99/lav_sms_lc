@@ -21,7 +21,7 @@ class UserChangePass extends FormRequest
     {
         return [
             'current_password' => 'required',
-            'password' => 'required|min:8|alpha_num|confirmed',
+            'password' => 'required|min:4|alpha_num|confirmed',
         ];
     }
 

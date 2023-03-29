@@ -1,4 +1,51 @@
 <script>
+    
+    $(document).ready(function(){ 
+        $('.dropdown-item').change(function(){
+            console.log('change');
+        });
+
+        $('input[required]').on('invalid', function() {
+            this.setCustomValidity("Trường ("+ $(this).parents('.form-group').children('label').text().replace('*', '') + ") là bắt buộc !!");
+        });
+        $('select[required]').on('invalid', function() {
+            this.setCustomValidity("Trường ("+ $(this).parents('.form-group').children('label').text().replace('*', '') + ") là bắt buộc !!");
+        });
+        $('#student_record_id.select-search.form-control').change(function(){
+            console.log($(this).find(':selected').attr('dob')); 
+            $('#dob').val($(this).find(':selected').attr('dob'));
+            $('#dob').datepicker("setDate", $(this).find(':selected').attr('dob'));
+        })
+    });
+
+    function getStudentClass(class_id){
+        var url = '{{ route('get_class_student', [':id']) }}';
+        url = url.replace(':id', class_id);
+        var section = $('#student_record_id');
+
+        $.ajax({
+            dataType: 'json',
+            url: url,
+            success: function (resp) {
+                console.log(resp);
+                section.empty();
+                section.append('<option value="0">Chọn học sinh ... </option>');
+                $.each(resp, function (i, data) {
+                    
+                    section.append(
+                        $('<option>', {
+                            value: data.id,
+                            text: data.name,
+                            dob: data.dob
+                        })
+                    );
+                });
+
+            }
+        })
+    }
+
+
 
     function getLGA(state_id){
         var url = '{{ route('get_lga', [':id']) }}';
@@ -85,7 +132,7 @@
     pop({msg : '{{ session('pop_warning') }}', type : 'warning'});
     @endif
 
- @if (session('pop_success'))
+    @if (session('pop_success'))
     pop({msg : '{{ session('pop_success') }}', type : 'success', title: 'GREAT!!'});
     @endif
 
@@ -122,11 +169,37 @@
             hide : data.type !== "danger"
         });
     }
+    function confirmAccept(id) {
+        swal({
+            title: "Bạn có chắc không?",
+            text: "Xác nhận phê duyệt đơn xin phép này!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true
+        }).then(function(willDelete){console.log(willDelete);
+            if (willDelete) {
+             $('form#item-accept-'+id+status).submit();
+            }
+        });
+    }
+    function confirmDeny(id) {
+        swal({
+            title: "Bạn có chắc không?",
+            text: "Xác nhận từ chối đơn xin phép này!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true
+        }).then(function(willDelete){
+            if (willDelete) {
+             $('form#item-deny-'+id).submit();
+            }
+        });
+    }
 
     function confirmDelete(id) {
         swal({
-            title: "Are you sure?",
-            text: "Once deleted, you will not be able to recover this item!",
+            title: "Bạn có chắc không?",
+            text: "Sau khi xóa, bạn sẽ không thể khôi phục mục này!",
             icon: "warning",
             buttons: true,
             dangerMode: true
@@ -139,8 +212,8 @@
 
     function confirmReset(id) {
         swal({
-            title: "Are you sure?",
-            text: "This will reset this item to default state",
+            title: "Bạn có chắc không?",
+            text: "Thao tác này sẽ đặt lại mục này về trạng thái mặc định",
             icon: "warning",
             buttons: true,
             dangerMode: true
@@ -238,10 +311,10 @@
                 displayAjaxErr(errors);
             }
            if(e.status == 500){
-               displayAjaxErr([e.status + ' ' + e.statusText + ' Please Check for Duplicate entry or Contact School Administrator/IT Personnel'])
+               displayAjaxErr([e.status + ' ' + e.statusText + ' Vui lòng kiểm tra mục nhập trùng lặp hoặc liên hệ với quản trị viên trường học/nhân viên CNTT'])
            }
             if(e.status == 404){
-               displayAjaxErr([e.status + ' ' + e.statusText + ' - Requested Resource or Record Not Found'])
+               displayAjaxErr([e.status + ' ' + e.statusText + ' - Không tìm thấy tài nguyên hoặc bản ghi được yêu cầu'])
            }
             enableBtn(btn);
             return e.status;
@@ -277,7 +350,7 @@
     }
 
     function clearForm(form){
-        form.find('.select, .select-search').val([]).select2({ placeholder: 'Select...'});
+        form.find('.select, .select-search').val([]).select2({ placeholder: 'Chọn ...'});
         form[0].reset();
     }
 

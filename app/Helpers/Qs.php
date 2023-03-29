@@ -4,6 +4,9 @@ namespace App\Helpers;
 
 use App\Models\Setting;
 use App\Models\StudentRecord;
+use App\Models\MyClass;
+
+
 use App\Models\Subject;
 use Hashids\Hashids;
 use Illuminate\Support\Facades\Auth;
@@ -87,7 +90,7 @@ class Qs
 
     public static function getUserRecord($remove = [])
     {
-        $data = ['name', 'email', 'phone', 'phone2', 'dob', 'gender', 'address', 'bg_id', 'nal_id', 'state_id', 'lga_id'];
+        $data = ['name', 'email', 'phone', 'phone2', 'dob', 'gender', 'address', 'bg_id', 'nal_id'];
 
         return $remove ? array_values(array_diff($data, $remove)) : $data;
     }
@@ -99,9 +102,15 @@ class Qs
         return $remove ? array_values(array_diff($data, $remove)) : $data;
     }
 
+    public static function getStudentWritte($remove = [])
+    {
+        $data = ['student_record_id', 'date_at', 'session_time', 'reason', 'accpet_by', 'deny_by'];
+        return $remove ? array_values(array_diff($data, $remove)) : $data;
+    }
+
     public static function getStudentData($remove = [])
     {
-        $data = ['my_class_id', 'section_id', 'my_parent_id', 'dorm_id', 'dorm_room_no', 'year_admitted', 'house', 'age'];
+        $data = ['my_class_id', 'my_parent_id', 'year_admitted', 'age'];
 
         return $remove ? array_values(array_diff($data, $remove)) : $data;
 
@@ -211,7 +220,7 @@ class Qs
 
     public static function getPTA()
     {
-        return ['super_admin', 'admin', 'teacher', 'parent'];
+        return ['super_admin', 'admin', 'teacher', 'parent', 'student'];
     }
 
     /*public static function filesToUpload($programme)
@@ -231,12 +240,12 @@ class Qs
 
     public static function getUploadPath($user_type)
     {
-        return 'uploads/'.$user_type.'/';
+        return 'uploads/'.$user_type.'';
     }
 
     public static function getFileMetaData($file)
     {
-        //$dataFile['name'] = $file->getClientOriginalName();
+        $dataFile['name'] = $file->getClientOriginalName();
         $dataFile['ext'] = $file->getClientOriginalExtension();
         $dataFile['type'] = $file->getClientMimeType();
         $dataFile['size'] = self::formatBytes($file->getSize());
@@ -278,6 +287,11 @@ class Qs
         return self::getSetting('system_name');
     }
 
+    public static function getSystemFooter()
+    {
+        return self::getSetting('system_footer');
+    }
+
     public static function findMyChildren($parent_id)
     {
         return StudentRecord::where('my_parent_id', $parent_id)->with(['user', 'my_class'])->get();
@@ -286,6 +300,11 @@ class Qs
     public static function findTeacherSubjects($teacher_id)
     {
         return Subject::where('teacher_id', $teacher_id)->with('my_class')->get();
+    }
+
+    public static function findClassTeachers($teacher_id)
+    {
+        return MyClass::where('teacher_id', $teacher_id)->get();
     }
 
     public static function findStudentRecord($user_id)

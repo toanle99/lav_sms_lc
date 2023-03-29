@@ -18,10 +18,22 @@ Route::group(['middleware' => 'auth'], function () {
         Route::put('/', 'MyAccountController@update_profile')->name('my_account.update');
         Route::put('/change_password', 'MyAccountController@change_pass')->name('my_account.change_pass');
     });
+    
 
     /*************** Support Team *****************/
     Route::group(['namespace' => 'SupportTeam',], function(){
-
+        /*************** GXP *****************/
+        Route::group(['prefix' => 'gxp'], function(){
+            // Route::get('',          'StudentWritteController@listByClass')->name('gxp.index');
+            Route::get('update_st/{gxp_id}/{status}',   'StudentWritteController@update_st')->name('gxp.update_st');
+            Route::get('list',                  'StudentWritteController@listByClass')->name('gxp.list');
+            // Route::get('list/pending',          'StudentWritteController@pending')->name('gxp.pending');
+            // Route::get('list/approved',         'StudentWritteController@approved')->name('gxp.approved');
+            // Route::get('list/Tapproved',        'StudentWritteController@Tapproved')->name('gxp.Tapproved');
+            // Route::get('list/deny',             'StudentWritteController@deny')->name('gxp.deny');
+            // Route::get('list/Tdeny',            'StudentWritteController@Tdeny')->name('gxp.Tdeny');
+            
+        });
         /*************** Students *****************/
         Route::group(['prefix' => 'students'], function(){
             Route::get('reset_pass/{st_id}', 'StudentRecordController@reset_pass')->name('st.reset_pass');
@@ -38,6 +50,8 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('promote/{fc}/{fs}/{tc}/{ts}', 'PromotionController@promote')->name('students.promote');
 
         });
+
+        
 
         /*************** Users *****************/
         Route::group(['prefix' => 'users'], function(){
@@ -135,6 +149,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         });
 
+        Route::resource('gxp', 'StudentWritteController');  
         Route::resource('students', 'StudentRecordController');
         Route::resource('users', 'UserController');
         Route::resource('classes', 'MyClassController');
@@ -152,6 +167,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('get_lga/{state_id}', 'AjaxController@get_lga')->name('get_lga');
         Route::get('get_class_sections/{class_id}', 'AjaxController@get_class_sections')->name('get_class_sections');
         Route::get('get_class_subjects/{class_id}', 'AjaxController@get_class_subjects')->name('get_class_subjects');
+        Route::get('get_class_student/{class_id}', 'AjaxController@get_class_student')->name('get_class_student');
     });
 
 });

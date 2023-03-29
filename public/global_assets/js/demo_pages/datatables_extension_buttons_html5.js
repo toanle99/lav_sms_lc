@@ -29,10 +29,10 @@ var DatatableButtonsHtml5 = function() {
             autoWidth: false,
             dom: '<"datatable-header"fBl><"datatable-scroll"t><"datatable-footer"ip>',
             language: {
-                search: '<span>Filter:</span> _INPUT_',
-                searchPlaceholder: 'Type to filter...',
-                lengthMenu: '<span>Show:</span> _MENU_',
-                paginate: { 'first': 'First', 'last': 'Last', 'next': $('html').attr('dir') == 'rtl' ? '&larr;' : '&rarr;', 'previous': $('html').attr('dir') == 'rtl' ? '&rarr;' : '&larr;' }
+                search: '<span>Lọc:</span> _INPUT_',
+                searchPlaceholder: 'nhập để lọc ...',
+                lengthMenu: '<span>Hiển thị:</span> _MENU_',
+                paginate: { 'first': 'Đầu', 'last': 'Cuối', 'next': $('html').attr('dir') == 'rtl' ? '&larr;' : '&rarr;', 'previous': $('html').attr('dir') == 'rtl' ? '&rarr;' : '&larr;' }
             }
         });
 
@@ -52,7 +52,7 @@ var DatatableButtonsHtml5 = function() {
                     'pdfHtml5',
                     {
                         extend: 'colvis',
-                        text: '<i class="icon-three-bars"></i> Visibility',
+                        text: '<i class="icon-three-bars"></i> Cột',
                         className: 'btn bg-blue btn-icon dropdown-toggle'
                     }
                 ]
@@ -98,7 +98,7 @@ var DatatableButtonsHtml5 = function() {
                     },
                     {
                         extend: 'colvis',
-                        text: '<i class="icon-three-bars"></i> Visibility',
+                        text: '<i class="icon-three-bars"></i> Cột',
                         className: 'btn bg-blue btn-icon dropdown-toggle'
                     }
                 ]
@@ -113,7 +113,7 @@ var DatatableButtonsHtml5 = function() {
                     {
                         extend: 'copyHtml5',
                         className: 'btn btn-light',
-                        text: '<i class="icon-copy3 mr-2"></i> Copy'
+                        text: '<i class="icon-copy3 mr-2"></i> Sao chép'
                     },
                     {
                         extend: 'csvHtml5',

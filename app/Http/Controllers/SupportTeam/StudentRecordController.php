@@ -22,7 +22,7 @@ class StudentRecordController extends Controller
 
    public function __construct(LocationRepo $loc, MyClassRepo $my_class, UserRepo $user, StudentRepo $student)
    {
-       $this->middleware('teamSA', ['only' => ['edit','update', 'reset_pass', 'create', 'store', 'graduated'] ]);
+       $this->middleware('teamSAT', ['only' => ['edit','update', 'reset_pass', 'create', 'store', 'graduated'] ]);
        $this->middleware('super_admin', ['only' => ['destroy',] ]);
 
         $this->loc = $loc;
@@ -43,9 +43,9 @@ class StudentRecordController extends Controller
     {
         $data['my_classes'] = $this->my_class->all();
         $data['parents'] = $this->user->getUserByType('parent');
-        $data['dorms'] = $this->student->getAllDorms();
-        $data['states'] = $this->loc->getStates();
-        $data['nationals'] = $this->loc->getAllNationals();
+        // $data['dorms'] = $this->student->getAllDorms();
+        // $data['states'] = $this->loc->getStates();
+        // $data['nationals'] = $this->loc->getAllNationals();
         return view('pages.support_team.students.add', $data);
     }
 
@@ -53,7 +53,7 @@ class StudentRecordController extends Controller
     {
        $data =  $req->only(Qs::getUserRecord());
        $sr =  $req->only(Qs::getStudentData());
-
+        // dd($sr);
         $ct = $this->my_class->findTypeByClass($req->my_class_id)->code;
        /* $ct = ($ct == 'J') ? 'JSS' : $ct;
         $ct = ($ct == 'S') ? 'SS' : $ct;*/
@@ -68,9 +68,10 @@ class StudentRecordController extends Controller
 
         if($req->hasFile('photo')) {
             $photo = $req->file('photo');
-            $f = Qs::getFileMetaData($photo);
-            $f['name'] = 'photo.' . $f['ext'];
-            $f['path'] = $photo->storeAs(Qs::getUploadPath('student').$data['code'], $f['name']);
+            $f = Qs::getFileMetaData($photo);dd($f);
+            // $f['name'] = 'photo.' . $f['ext'];
+            // $f['path'] = $photo->storeAs(Qs::getUploadPath('student').$data['code'], $f['name']);
+            $f['path'] = $photo->storeAs(Qs::getUploadPath('student'), $sr->user->code.'-'.$f['name']);
             $data['photo'] = asset('storage/' . $f['path']);
         }
 
@@ -78,7 +79,7 @@ class StudentRecordController extends Controller
 
         $sr['adm_no'] = $data['username'];
         $sr['user_id'] = $user->id;
-        $sr['session'] = Qs::getSetting('current_session');
+        // $sr['session'] = Qs::getSetting('current_session');
 
         $this->student->createRecord($sr); // Create Student
         return Qs::jsonStoreOk();
@@ -88,7 +89,7 @@ class StudentRecordController extends Controller
     {
         $data['my_class'] = $mc = $this->my_class->getMC(['id' => $class_id])->first();
         $data['students'] = $this->student->findStudentsByClass($class_id);
-        $data['sections'] = $this->my_class->getClassSections($class_id);
+        // $data['sections'] = $this->my_class->getClassSections($class_id);
 
         return is_null($mc) ? Qs::goWithDanger() : view('pages.support_team.students.list', $data);
     }
@@ -134,7 +135,7 @@ class StudentRecordController extends Controller
         $data['sr'] = $this->student->getRecord(['id' => $sr_id])->first();
         $data['my_classes'] = $this->my_class->all();
         $data['parents'] = $this->user->getUserByType('parent');
-        $data['dorms'] = $this->student->getAllDorms();
+        // $data['dorms'] = $this->student->getAllDorms();
         $data['states'] = $this->loc->getStates();
         $data['nationals'] = $this->loc->getAllNationals();
         return view('pages.support_team.students.edit', $data);
@@ -152,8 +153,8 @@ class StudentRecordController extends Controller
         if($req->hasFile('photo')) {
             $photo = $req->file('photo');
             $f = Qs::getFileMetaData($photo);
-            $f['name'] = 'photo.' . $f['ext'];
-            $f['path'] = $photo->storeAs(Qs::getUploadPath('student').$sr->user->code, $f['name']);
+            // $f['name'] = 'photo.' . $f['ext'];
+            $f['path'] = $photo->storeAs(Qs::getUploadPath('student'), $sr->user->code.'-'.$f['name']);
             $d['photo'] = asset('storage/' . $f['path']);
         }
 
