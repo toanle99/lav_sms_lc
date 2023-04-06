@@ -13,10 +13,10 @@ class CreateStudentWrittesTableInsert extends Migration
      */
     public function up()
     {
-        Schema::table('student_writtes', function($table) {
-            $table->unsignedInteger('accept_by')->nullable();
-            $table->unsignedInteger('deny_by')->nullable();
-        });
+    //     Schema::table('student_writtes', function($table) {
+    //         $table->unsignedInteger('accept_by')->nullable();
+    //         $table->unsignedInteger('deny_by')->nullable();
+    //     });
     }
 
     /**
@@ -26,9 +26,9 @@ class CreateStudentWrittesTableInsert extends Migration
      */
     public function down()
     {
-        Schema::table('student_writtes', function($table) {
-            $table->dropColumn('accept_by');
-            $table->dropColumn('deny_by');
-        });
+        // Schema::table('student_writtes', function($table) {
+        //     $table->dropColumn('accept_by');
+        //     $table->dropColumn('deny_by');
+        // });
     }
 }

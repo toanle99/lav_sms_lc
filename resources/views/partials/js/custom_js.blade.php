@@ -45,7 +45,35 @@
         })
     }
 
+    function getWritteByDate(date){
+        date = date.replaceAll('/','-');
+        var url = '{{ route('get_writte_by_day', [':date']) }}';
+        url = url.replace(':date', date);
+        $.ajax({
+            dataType: 'json',
+            url: url,
+            success: function (resp) {
+                console.log(resp);
+                $("select#session_time option").removeAttr('disabled');
+                $('#session_time').select2();
+                if(resp.status == 'success'){
+                    flash({msg : resp.flash_success, type : 'success'});
+                    // $('.btn.btn-primary').removeClass('disabled');
+                }else {
+                    flash({msg : resp.flash_warning, type : 'warning'});
+                    // $('.btn.btn-primary').addClass('disabled');
+                }
+                if(resp.fill >0){
+                    resp.fills.forEach(function(val){
+                        $("select#session_time option[value='"+ val + "']").attr('disabled', 'true');
+                        $('#session_time').select2();
+                    });
+                    
+                } 
 
+            }
+        })
+    }
 
     function getLGA(state_id){
         var url = '{{ route('get_lga', [':id']) }}';

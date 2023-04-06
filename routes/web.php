@@ -168,6 +168,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('get_class_sections/{class_id}', 'AjaxController@get_class_sections')->name('get_class_sections');
         Route::get('get_class_subjects/{class_id}', 'AjaxController@get_class_subjects')->name('get_class_subjects');
         Route::get('get_class_student/{class_id}', 'AjaxController@get_class_student')->name('get_class_student');
+        Route::get('get_writte_by_day/{date}', 'AjaxController@getStudentWritteByDays')->name('get_writte_by_day');
     });
 
 });

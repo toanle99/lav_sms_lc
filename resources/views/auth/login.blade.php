@@ -1,18 +1,18 @@
 @extends('layouts.login_master')
 
 @section('content')
-    <div class="page-content login-cover">
+    <div class="page-content login-cover" style="margin: 0;height: 100%;background: #fff;">
 
         <!-- Main content -->
         <div class="content-wrapper">
 
             <!-- Content area -->
-            <div class="content d-flex justify-content-center align-items-center">
+            <div class="content d-flex justify-content-center align-items-center px-0 py-0">
 
                 <!-- Login card -->
                 <form class="login-form " method="post" action="{{ route('login') }}">
                     @csrf
-                    <div class="card mb-0">
+                    <div class="card mb-0" style="border:0">
                         <div class="card-body">
                             <div class="text-center mb-3">
                                 <i class="icon-people icon-2x text-warning-400 border-warning-400 border-3 rounded-round p-3 mb-3 mt-1"></i>

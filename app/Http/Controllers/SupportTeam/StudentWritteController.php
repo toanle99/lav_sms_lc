@@ -29,6 +29,16 @@ class StudentWritteController extends Controller
         2: giáo viên duyệt
         3: phụ huynh từ chối
         4: giáo viên từ chối 
+        //    bgh     // báo cáo exel danh sách học sinh nghỉ học theo từng tuần
+        //    gxp->report (all)
+
+        //    teacher // báo cáo exel danh sách học sinh nghỉ học theo từng tuần
+        //    gxp->report (class)
+        
+        //    parent  // Xem báo cáo thống kê của con mình
+        //    gxp->report(student_id)
+        // create -> Cả ngày, Buổi sáng, Buổi chiều
+        // 
     */
     public function __construct(LocationRepo $loc, MyClassRepo $my_class, UserRepo $user, StudentRepo $student)
     {
@@ -41,14 +51,34 @@ class StudentWritteController extends Controller
     public function index()
     {
         $ut  = WritteType::orderby('level')->get();
-        $gxps = StudentWritte::orderbyDesc('id')->get();
+        $gxps = StudentWritte::orderbyDesc('date_at')->get();
+        $user = Auth::user();
+        
         if(Qs::userIsTeamSAT()){
             $ut = $ut->whereIn('level', [1,2,4]);
             $gxps = $gxps->whereIn('status', [1,2,4]);
             if(Qs::userIsTeacher()){
+                // class of teacher 
+                $cl_tcs =  $this->my_class->findClassIdsByTeacher($user->id);
+                foreach($cl_tcs as $cl_tc)
+                    $student = $this->student->findStudentIdsByClasses($cl_tc);
 
+                // dd($gxps);
+                // $src_ids =  $this->student->findStudentIdsByClass($student->my_class_id);            
+                $gxps = $gxps->whereIn('student_record_id', $student);
             }
+            
         }   
+        if(Qs::userIsStudent()){
+            // gxp of student
+            $student = $this->student->getRecord(['id' => $user->id])->first();
+            $gxps = $gxps->where('student_record_id', $student->id);
+            $d['student_rc'] =  $this->student->findStudentsByClass($student->my_class_id);
+            $d['student'] = $student;
+        }
+        
+        
+        
         $d['my_classes'] = $this->my_class->all();
         $d['parents'] = $this->user->getUserByType('parent');
         $d['gxp_types'] = $ut; 
@@ -77,11 +107,53 @@ class StudentWritteController extends Controller
     }
 
     public function store(StudentWritteCreate $req)
-    { 
-        $sr =  $req->only(Qs::getStudentWritte());   
-        $sr['date_at'] = date('Y-m-d', strtotime(str_replace('/', '-', $sr['date_at']))); 
-        $this->student->createWritte($sr); // Create Student
-        return Qs::jsonStoreOk();
+    {  
+        $user = Auth::user();
+        if(Qs::userIsStudent()){
+            $student = $this->student->getRecord(['id' => $user->id])->first();
+            $sr =  $req->only(Qs::getStudentWritte());   
+            $sr['student_record_id'] = $student->id;
+            $sr['date_at'] = date('Y-m-d', strtotime(str_replace('/', '-', $sr['date_at']))); 
+            //
+            $student_w = $this->student->getWrittes($student->id);
+            
+            $student_w = $student_w->where('date_at', date('Y-m-d', strtotime(str_replace('/', '-', $sr['date_at']))));
+            $fill = 0;
+            $fill_vs = Array();
+            foreach($student_w as $st){ 
+                switch($st->session_time) {
+                    case 'Buổi sáng':{
+                        $fill += 1;
+                        array_push($fill_vs, 'Buổi sáng');
+                        array_push($fill_vs, 'Cả ngày');
+                        break;
+                    }
+                    
+                    case 'Buổi chiều':{
+                        $fill += 2;
+                        array_push($fill_vs, 'Buổi chiều');
+                        array_push($fill_vs, 'Cả ngày');
+                        break;
+                    }
+                    case 'Cả ngày':{
+                        $fill += 4;
+                        array_push($fill_vs, 'Buổi chiều');
+                        array_push($fill_vs, 'Buổi sáng');
+                        array_push($fill_vs, 'Cả ngày');
+                        break;
+                    }
+                }
+            }
+            if(in_array($sr['session_time'], $fill_vs)) {
+                return back()->with('flash_error', __('msg.gxp_fill_'.$fill));
+            }
+
+            // 
+            $this->student->createWritte($sr); // Create Student
+            //
+            return Qs::jsonStoreOk();
+        }   
+        return Qs::goWithDanger();        
     }
 
     public function update_st($gxp_id, $status)
@@ -106,7 +178,7 @@ class StudentWritteController extends Controller
                 break;
             }
             case 2: case 4: {
-                if(Qs::userISTeamSAT() && $gxp->status == 1){
+                if(Qs::userIsTeamSAT() && $gxp->status == 1){
                     $st = $status==2?"accept_by":"deny_by"; 
                     $data = [
                         $st      => $user->id,

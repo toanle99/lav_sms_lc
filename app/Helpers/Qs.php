@@ -39,12 +39,13 @@ class Qs
 
     public static function getPanelOptions()
     {
-        return '    <div class="header-elements">
-                    <div class="list-icons">
-                        <a class="list-icons-item" data-action="collapse"></a>
-                        <a class="list-icons-item" data-action="remove"></a>
-                    </div>
-                </div>';
+        return '    
+        <div class="header-elements">
+            <div class="list-icons">
+                <a class="list-icons-item" data-action="collapse"></a>
+                <a class="list-icons-item" data-action="remove"></a>
+            </div>
+        </div>';
     }
 
     public static function displaySuccess($msg)
@@ -240,7 +241,7 @@ class Qs
 
     public static function getUploadPath($user_type)
     {
-        return 'uploads/'.$user_type.'';
+        return 'uploads/'.$user_type.'/';
     }
 
     public static function getFileMetaData($file)

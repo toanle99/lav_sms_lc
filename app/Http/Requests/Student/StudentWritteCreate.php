@@ -21,7 +21,7 @@ class StudentWritteCreate extends FormRequest
     public function rules()
     {
         return [
-            'student_record_id' => 'required', 
+            // 'student_record_id' => 'required', 
             'date_at' => 'required|string', 
             'session_time' => 'required', 
             'reason' => 'required|string|min:6|max:150',

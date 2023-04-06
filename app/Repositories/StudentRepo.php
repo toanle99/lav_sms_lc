@@ -9,7 +9,11 @@ use App\Models\StudentRecord;
 use App\Models\StudentWritte;
 
 class StudentRepo {
-
+    
+    public function findStudentIdsByClasses($class_id)
+    {
+        return $this->activeStudents()->where(['my_class_id' => $class_id])->get()->pluck('id')->sortBy('id');
+    }
 
     public function findStudentsByClass($class_id)
     {
@@ -40,6 +44,12 @@ class StudentRepo {
     {
         return StudentWritte::create($data);
     }
+
+    public function getWrittes($id)
+    {
+        return StudentWritte::where('student_record_id', $id)->orderbyDesc('id')->get();;
+    }
+
     public function updateWritte($id, array $data)
     {
         return StudentWritte::find($id)->update($data);
@@ -62,6 +72,11 @@ class StudentRepo {
     public function getRecord(array $data)
     {
         return $this->activeStudents()->where($data)->with('user');
+    }
+
+    public function getRecordIds(array $data)
+    {
+        return $this->activeStudents()->where($data)->pluck('id');
     }
 
     public function getRecordByUserIDs($ids)

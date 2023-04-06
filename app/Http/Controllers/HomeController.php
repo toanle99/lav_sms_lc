@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Qs;
 use App\Repositories\UserRepo;
+use App\Models\StudentWritte;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -37,10 +39,17 @@ class HomeController extends Controller
 
     public function dashboard()
     {
+        $gxps = StudentWritte::orderbyDesc('date_at')->get();
+        $user = Auth::user();
         $d=[];
         if(Qs::userIsTeamSAT()){
             $d['users'] = $this->user->getAll();
         }
+        if(Qs::userIsStudent()){
+            $gxps = $gxps->where('student_record_id', $user->id);
+            $d['gxps'] = $gxps;
+        }
+        // dd($gxps);
 
         return view('pages.support_team.dashboard', $d);
     }

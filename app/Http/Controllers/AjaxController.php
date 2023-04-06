@@ -31,12 +31,71 @@ class AjaxController extends Controller
         })->all();
     }
 
+    public function getStudentWritteByDays($date)
+    {   
+        $date = date('Y-m-d', strtotime($date)); 
+        
+        $user = Auth::user();
+        if(Qs::userIsStudent()){
+            $student = $this->student_repo->getRecord(['id' => $user->id])->first();
+            //
+            $student_w = $this->student_repo->getWrittes($student->id);
+
+            $student_w = $student_w->where('date_at', $date);
+            $fill = 0;
+            // buổi sáng  +1 ,
+            // chiều +2 
+            // =>   0       |        1          |      2            |      3                |      4
+            // cả ngày + 4 
+            //  chưa đki    |  đki buổi sáng    | đk buổi chiều     | đk sáng và chiều      | đk cả ngày
+            $fill_vs = Array();
+            foreach($student_w as $st){ 
+                switch($st->session_time) {
+                    case 'Buổi sáng':{
+                        $fill += 1;
+                        array_push($fill_vs, 'Buổi sáng');
+                        array_push($fill_vs, 'Cả ngày');
+                        break;
+                    }
+                    
+                    case 'Buổi chiều':{
+                        $fill += 2;
+                        array_push($fill_vs, 'Buổi chiều');
+                        array_push($fill_vs, 'Cả ngày');
+                        break;
+                    }
+                    case 'Cả ngày':{
+                        $fill += 4;
+                        array_push($fill_vs, 'Buổi chiều');
+                        array_push($fill_vs, 'Buổi sáng');
+                        array_push($fill_vs, 'Cả ngày');
+                        break;
+                    }
+                }
+                // die($st);
+            }
+            // 
+            // return 'msg.gxp_st_er_1';
+            // die($student_w); 
+            // $d['section'] = 'msg.gxp_st_er_1';
+            if($fill == 0) 
+            return response()->json(['fills'=>$fill_vs, 'fill'=>$fill, 'status'=>'success','flash_success'=>__('msg.gxp_fill_'.$fill).' '.date('d/m/Y', strtotime($date)) ]);
+
+            return response()->json(['fills'=>$fill_vs, 'fill'=>$fill , 'status'=>'warning','flash_warning'=>__('msg.gxp_fill_'.$fill).' '.date('d/m/Y', strtotime($date)) ]);
+
+            
+        }   
+        return response()->json(['status'=>'error','flash_error'=>__('msg.gxp_st_er') ]);       
+    }
+
     public function get_class_student($class_id)
     {
-        $sections = $this->student_repo->findStudentsByClass($class_id);
-        return $sections = $sections->map(function($q){
-            return ['id' => $q->id, 'name' => $q->user->name, 'dob' => $q->user->dob];
-        })->all();
+        $user = Auth::user();
+
+        // $sections = $this->student_repo->findStudentsByClass($class_id);
+        // return $sections = $sections->map(function($q){
+        //     return ['id' => $q->id, 'name' => $q->user->name, 'dob' => $q->user->dob];
+        // })->all();
     }
 
     public function get_class_sections($class_id)

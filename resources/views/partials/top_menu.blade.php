@@ -1,4 +1,5 @@
-<div class="navbar navbar-expand-md navbar-dark">
+<div class="navbar navbar-expand-md navbar-dark" style="background: #0071bc;">
+    @if(Auth::user())
     <div class="d-md-none">
         {{-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-mobile">
             <i class="icon-tree5"></i>
@@ -7,14 +8,17 @@
             <i class="icon-paragraph-justify3"></i>
         </button>
     </div>
-    <div class="mt-2">
+    @endif
+    <div class="mt-2 mx-auto">
         <a href="{{ route('dashboard') }}" class="d-inline-block">
         <h4 class="text-bold text-white">{{ Qs::getSystemName() }}</h4>
         </a>
     </div>
+    @if(Auth::user())
     <a href="#" class="navbar-nav-link dropdown-toggle d-block d-md-none" data-toggle="dropdown">
         <i class="icon-paragraph-justify3"></i>
     </a>
+    
     <div class="collapse navbar-collapse" id="navbar-mobile">
         <ul class="navbar-nav">
             <li class="nav-item">
@@ -44,6 +48,7 @@
                     </form>
                 </div>
             </li>
-        </ul>
+        </ul> 
     </div>
+    @endif
 </div>

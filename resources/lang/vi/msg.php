@@ -28,4 +28,9 @@ return
     'gxp_st_er_2'       => 'Phê duyệt giấy xin phép không thành công',
     'gxp_st_er_3'       => 'Từ chối giấy xin phép không thành công',
     'gxp_st_er_4'       => 'Từ chối giấy xin phép không thành công',
+    'gxp_fill_0'        => 'Chưa đăng ký giấy xin phép',
+    'gxp_fill_1'        => 'Đã đăng ký giấy xin phép buổi sáng',
+    'gxp_fill_2'        => 'Đã đăng ký giấy xin phép buổi chiều',
+    'gxp_fill_3'        => 'Đã đăng ký 2 giấy xin phép buổi sáng và chiều',
+    'gxp_fill_4'        => 'Đã đăng ký giấy xin phép cả ngày',
 ];

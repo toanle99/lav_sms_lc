@@ -13978,7 +13978,7 @@ textarea#HandsontableCopyPaste {
  *
  * ---------------------------------------------------------------------------- */
 .login-cover {
-  background: url(../../../../../../global_assets/images/login_cover.jpg) no-repeat;
+  /* background: url(../../../../../../global_assets/images/login_cover.jpg) no-repeat; */
   background-size: cover; }
 
 .login-form {

@@ -30,6 +30,21 @@ class MyClassRepo
         return $this->activeStudents()->where(['my_class_id' => $class_id])->with(['my_class', 'user'])->get()->sortBy('user.name');
     }
 
+    public function findClassByTeacher($teacher_id)
+    {
+        return MyClass::where(['teacher_id' => $teacher_id])->get()->sortBy('id');
+    }
+
+    public function findClassIdsByTeacher($teacher_id)
+    {
+        return MyClass::where(['teacher_id' => $teacher_id])->get()->pluck('id')->sortByDesc('id');
+    }
+
+    public function findStudentIdsByClass($class_id)
+    {
+        return $this->activeStudents()->where(['my_class_id' => $class_id])->pluck('user')->get()->sortBy('id');
+    }
+
     public function getMC($data)
     {
         return MyClass::where($data);

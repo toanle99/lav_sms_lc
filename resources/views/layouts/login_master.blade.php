@@ -13,10 +13,24 @@
 </head>
 
 <body>
-@include('partials.login.header')
+{{-- @include('partials.login.header')
 @yield('content')
-@include('partials.login.footer')
-
+@include('partials.login.footer') --}}
+@include('partials.top_menu')
+<div class="page-content">
+    {{-- @include('partials.menu') --}}
+    <div class="content-wrapper"> 
+        <div class="content px-0 py-0">
+            {{--Error Alert Area--}}
+            
+            @yield('content')
+        </div>
+           
+    </div>
+</div>
+@include('partials.footer')
+@include('partials.inc_bottom')
+@yield('scripts')
 </body>
 
 </html>
