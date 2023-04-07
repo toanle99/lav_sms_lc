@@ -27,7 +27,7 @@ class UsersTableSeeder2 extends Seeder
     {
         $password = Hash::make('cj'); // Default user password
         $d = Array();
-        for($i=0;$i<10;$i++) {
+        for($i=0;$i<5;$i++) {
             $data = [
                 'name' => 'Thầy An '.$i,
                 'email' => 'teacher'.$i.'@teacher.com',

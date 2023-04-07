@@ -60,6 +60,8 @@ class StudentWritteController extends Controller
             if(Qs::userIsTeacher()){
                 // class of teacher 
                 $cl_tcs =  $this->my_class->findClassIdsByTeacher($user->id);
+                $student = Array();
+                // if(count($cl_tcs) == 0)    
                 foreach($cl_tcs as $cl_tc)
                     $student = $this->student->findStudentIdsByClasses($cl_tc);
 

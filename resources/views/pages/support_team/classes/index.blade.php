@@ -13,9 +13,11 @@
                 <li class="nav-item">
                     <a href="#all-classes" class="nav-link active" data-toggle="tab">Quản lý lớp học </a>
                 </li>
+                @if(Qs::userIsTeamSA())
                 <li class="nav-item">
                     <a href="#new-class" class="nav-link" data-toggle="tab"><i class="icon-plus2"></i> Tạo lớp mới</a>
                 </li>
+                @endif
             </ul>
 
             <div class="tab-content">
@@ -68,7 +70,7 @@
                         </tbody>
                     </table>
                 </div>
-
+                @if(Qs::userIsTeamSA())
                 <div class="tab-pane fade" id="new-class">
                     {{-- <div class="row">
                         <div class="col-md-12">
@@ -96,7 +98,7 @@
                                         <select data-placeholder="Chọn giáo viên" class="form-control select-search" name="teacher_id" id="teacher_id">
                                             <option value=""></option>
                                             @foreach($teachers as $t)
-                                                <option {{ $c->teacher_id == $t->id ? 'selected' : '' }} value="{{ Qs::hash($t->id) }}">{{ $t->name }}</option>
+                                                <option {{ $t->teacher_id == $t->id ? 'selected' : '' }} value="{{ Qs::hash($t->id) }}">{{ $t->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -120,6 +122,7 @@
                         </div>
                     </div>
                 </div>
+                @endif
             </div>
         </div>
     </div> 
